@@ -482,7 +482,6 @@
             "dethuong", "baby", "gaixinh", "boy", "xinh", "sock", "soc"
         ];
 
-        const EMAIL_RE = /\b[a-zA-Z0-9._%+\-]+@(gmail\.com|yahoo\.com|outlook\.com|yahoo\.com\.vn|hotmail\.com)\b/gi;
         const YEAR_RE = /(?:19[7-9][0-9]|20[0-1][0-9])/;
         const DAY_MONTH_RE = /(?:0[1-9]|[12][0-9]|3[01])(?:0[1-9]|1[0-2])/;
         const GEN_RE = /(?:8x|9x|10x)/;
@@ -537,6 +536,25 @@
 
         function containsAny(text, words) {
             return words.filter(word => word && text.includes(word));
+        }
+
+        // Regex để tìm email:password
+        function extractEmailPassword(text) {
+            // Pattern: email@domain:password
+            // Email: [a-zA-Z0-9._%+\-]+@(gmail\.com|yahoo\.com|outlook\.com|yahoo\.com\.vn|hotmail\.com)
+            // Password: bất kỳ ký tự nào sau dấu :
+            const pattern = /([a-zA-Z0-9._%+\-]+@(?:gmail\.com|yahoo\.com|outlook\.com|yahoo\.com\.vn|hotmail\.com)):(.+?)(?:\s|$)/gi;
+            const matches = [];
+            let match;
+            
+            while ((match = pattern.exec(text)) !== null) {
+                matches.push({
+                    email: match[1].toLowerCase(),
+                    password: match[2].trim()
+                });
+            }
+            
+            return matches;
         }
 
         function scoreVietnameseEmail(email) {
@@ -619,26 +637,28 @@
                 for (const line of lines) {
                     if (!line.trim()) continue;
 
-                    const emailMatch = line.match(EMAIL_RE);
-                    if (!emailMatch) continue;
+                    // Tìm tất cả email:password trong dòng
+                    const matches = extractEmailPassword(line);
+                    
+                    if (matches.length === 0) continue;
 
-                    const email = emailMatch[0].toLowerCase();
-                    const domain = email.split('@')[1];
+                    for (const match of matches) {
+                        const email = match.email;
+                        const password = match.password;
+                        const domain = email.split('@')[1];
 
-                    if (!ALLOWED_DOMAINS[domain]) continue;
-                    if (seen.has(email)) continue;
+                        if (!ALLOWED_DOMAINS[domain]) continue;
+                        if (seen.has(email)) continue;
 
-                    seen.add(email);
+                        seen.add(email);
 
-                    const passwordMatch = line.match(new RegExp(email + ':(.*)$', 'i'));
-                    const password = passwordMatch ? passwordMatch[1].trim() : 'N/A';
+                        const { score, level, reason } = scoreVietnameseEmail(email);
 
-                    const { score, level, reason } = scoreVietnameseEmail(email);
-
-                    if (score >= minScore) {
-                        rows.push({ email, password, domain, score, level, reason });
-                        domainCounter[domain] = (domainCounter[domain] || 0) + 1;
-                        levelCounter[level] = (levelCounter[level] || 0) + 1;
+                        if (score >= minScore) {
+                            rows.push({ email, password, domain, score, level, reason });
+                            domainCounter[domain] = (domainCounter[domain] || 0) + 1;
+                            levelCounter[level] = (levelCounter[level] || 0) + 1;
+                        }
                     }
                 }
 
