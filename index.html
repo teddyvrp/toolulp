@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Filter Tool - Lọc Email Việt Nam</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>VN Mail Filter Tool</title>
     <style>
         * {
             margin: 0;
@@ -12,38 +11,23 @@
             box-sizing: border-box;
         }
 
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #667eea;
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #764ba2;
-        }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             padding: 20px;
-            color: #333;
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
             background: white;
             border-radius: 20px;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
-            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 700px;
+            padding: 50px;
             animation: slideUp 0.5s ease-out;
         }
 
@@ -58,96 +42,48 @@
             }
         }
 
-        /* Header */
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 50px 40px;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 400px;
-            height: 400px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-        }
-
-        .header::after {
-            content: '';
-            position: absolute;
-            bottom: -50%;
-            left: -10%;
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 1;
+            margin-bottom: 40px;
         }
 
         .header h1 {
-            font-size: 36px;
-            margin-bottom: 10px;
+            color: #667eea;
+            font-size: 32px;
+            margin-bottom: 15px;
             font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .header-icon {
-            font-size: 40px;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
         }
 
         .header p {
-            font-size: 15px;
-            opacity: 0.95;
-            margin-top: 5px;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 10px;
         }
 
-        /* Content */
-        .content {
-            padding: 50px 40px;
+        .icon-container {
+            font-size: 48px;
+            margin-bottom: 20px;
         }
 
-        .section {
-            margin-bottom: 50px;
-        }
-
-        .section-title {
-            font-size: 22px;
-            color: #333;
+        .form-group {
             margin-bottom: 25px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 700;
         }
 
-        .section-title i {
-            color: #667eea;
-            font-size: 26px;
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        /* Upload Section */
-        .upload-area {
+        .file-input-wrapper {
             position: relative;
+            display: inline-block;
+            width: 100%;
         }
 
         .file-input-wrapper input[type="file"] {
@@ -155,1128 +91,634 @@
         }
 
         .file-input-label {
-            display: block;
-            padding: 50px 30px;
-            border: 3px dashed #667eea;
-            border-radius: 15px;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 25px;
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            background: #f8f9ff;
             cursor: pointer;
             transition: all 0.3s ease;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .file-input-label::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .file-input-label:hover::before {
-            left: 100%;
+            color: #667eea;
+            font-weight: 600;
+            gap: 10px;
         }
 
         .file-input-label:hover {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+            background: #f0f2ff;
             border-color: #764ba2;
-            transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.2);
+            color: #764ba2;
         }
 
-        .file-input-label.dragover {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
-            border-color: #764ba2;
-            transform: scale(1.02);
-        }
-
-        .upload-icon {
-            font-size: 48px;
+        .file-input-label.has-file {
+            border-style: solid;
+            background: #e8f0ff;
             color: #667eea;
-            margin-bottom: 15px;
-            animation: float 3s ease-in-out infinite;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .file-input-label-text {
-            font-size: 16px;
+        .file-name {
+            display: none;
             color: #667eea;
-            font-weight: 600;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 10px;
+            background: #f0f2ff;
+            border-radius: 8px;
+            text-align: center;
         }
 
-        .file-input-label-subtext {
-            font-size: 13px;
+        .file-name.show {
+            display: block;
+        }
+
+        .score-input-group {
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        .score-input-group input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            max-width: 120px;
+        }
+
+        .score-input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .hint-text {
+            font-size: 12px;
             color: #999;
             margin-top: 8px;
+            font-style: italic;
         }
 
-        /* File List */
-        .file-list {
-            margin-top: 30px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-        }
-
-        .file-item {
-            background: white;
-            padding: 18px;
-            border-radius: 12px;
-            border: 2px solid #e9ecef;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            animation: slideIn 0.3s ease-out;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .file-item:hover {
-            border-color: #667eea;
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .file-item-icon {
-            font-size: 20px;
-            color: #667eea;
-            margin-right: 10px;
-        }
-
-        .file-item-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .file-item-name {
-            font-size: 14px;
-            color: #333;
-            font-weight: 600;
-            word-break: break-all;
-            margin-bottom: 5px;
-        }
-
-        .file-item-size {
-            font-size: 12px;
-            color: #999;
-        }
-
-        .file-item-remove {
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-            margin-left: 10px;
-            transition: all 0.3s ease;
-            font-weight: 600;
-        }
-
-        .file-item-remove:hover {
-            background: #ff5252;
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
-        }
-
-        /* Buttons */
         .button-group {
             display: flex;
-            gap: 15px;
-            margin: 40px 0;
-            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 30px;
         }
 
-        button {
-            padding: 14px 30px;
+        .btn {
+            flex: 1;
+            padding: 14px 25px;
             border: none;
             border-radius: 10px;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        button::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-
-        button:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        .btn-process {
+        .btn-primary {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            flex: 1;
-            min-width: 150px;
-            justify-content: center;
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
         }
 
-        .btn-process:hover:not(:disabled) {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
         }
 
-        .btn-process:disabled {
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
 
-        .btn-clear {
-            background: #e9ecef;
-            color: #333;
-            flex: 1;
-            min-width: 150px;
-            justify-content: center;
+        .btn-secondary {
+            background: #f0f2ff;
+            color: #667eea;
+            border: 2px solid #667eea;
         }
 
-        .btn-clear:hover {
-            background: #dee2e6;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-download {
-            background: #51cf66;
+        .btn-secondary:hover {
+            background: #667eea;
             color: white;
-            padding: 12px 20px;
-            font-size: 13px;
-            margin-right: 10px;
-            margin-bottom: 10px;
-            box-shadow: 0 6px 15px rgba(81, 207, 102, 0.3);
         }
 
-        .btn-download:hover:not(:disabled) {
-            background: #40c057;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(81, 207, 102, 0.4);
+        .status-container {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
         }
 
-        .btn-download:disabled {
-            background: #ccc;
-            cursor: not-allowed;
+        .status-container.show {
+            display: block;
         }
 
-        .loading {
+        .status-loading {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .spinner {
             display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-top: 3px solid white;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(102, 126, 234, 0.3);
             border-radius: 50%;
+            border-top-color: #667eea;
             animation: spin 1s linear infinite;
+            margin-right: 10px;
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Progress */
-        .progress-section {
-            margin: 30px 0;
-            display: none;
-            animation: slideDown 0.3s ease-out;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
             to {
-                opacity: 1;
-                transform: translateY(0);
+                transform: rotate(360deg);
             }
         }
 
-        .progress-section.active {
-            display: block;
-        }
-
-        .progress-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .progress-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-        }
-
-        .progress-percent {
-            font-size: 14px;
-            font-weight: 600;
-            color: #667eea;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 10px;
-            background: #e9ecef;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            width: 0%;
-            transition: width 0.3s ease;
-            box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
-        }
-
-        /* Results */
-        .results-section {
-            margin-top: 40px;
-            display: none;
-            animation: slideUp 0.3s ease-out;
-        }
-
-        .results-section.active {
-            display: block;
-        }
-
-        .results-title {
-            font-size: 22px;
-            color: #333;
-            margin-bottom: 30px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 700;
-        }
-
-        /* Stats */
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .stat-card {
-            padding: 30px 25px;
-            border-radius: 15px;
-            text-align: center;
-            color: white;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            animation: slideUp 0.3s ease-out;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .stat-card h3 {
-            font-size: 32px;
-            margin-bottom: 10px;
-            font-weight: 700;
-            position: relative;
-            z-index: 1;
-        }
-
-        .stat-card p {
-            font-size: 13px;
-            opacity: 0.95;
-            position: relative;
-            z-index: 1;
-        }
-
-        .stat-card-1 {
-            background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
-        }
-
-        .stat-card-2 {
-            background: linear-gradient(135deg, #ffd43b 0%, #fab005 100%);
-        }
-
-        .stat-card-3 {
-            background: linear-gradient(135deg, #ff6b6b 0%, #fa5252 100%);
-        }
-
-        .stat-card-4 {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        /* Tabs */
-        .results-tabs {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 25px;
-            border-bottom: 2px solid #e9ecef;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            padding: 12px 24px;
-            background: none;
-            border: none;
-            border-bottom: 3px solid transparent;
-            color: #999;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .tab-btn::before {
-            display: none;
-        }
-
-        .tab-btn:hover {
-            color: #667eea;
-        }
-
-        .tab-btn.active {
-            color: #667eea;
-            border-bottom-color: #667eea;
-        }
-
-        /* Tab Content */
-        .tab-content {
-            display: none;
-            max-height: 600px;
-            overflow-y: auto;
-            border-radius: 12px;
+        .results {
+            margin-top: 25px;
             padding: 20px;
-            background: #f8f9ff;
-            border: 2px solid #e9ecef;
-            animation: fadeIn 0.3s ease-out;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
-        }
-
-        .tab-content.active {
+        .results.show {
             display: block;
         }
 
         .result-item {
+            padding: 12px;
             background: white;
-            padding: 18px;
-            margin-bottom: 12px;
-            border-radius: 10px;
-            border-left: 5px solid #667eea;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+            margin-bottom: 10px;
             font-size: 13px;
-            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-            word-break: break-all;
             line-height: 1.6;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-            transition: all 0.3s ease;
-            animation: slideIn 0.3s ease-out;
         }
 
-        .result-item:hover {
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-            transform: translateX(5px);
-        }
-
-        .result-item.high {
-            border-left-color: #51cf66;
-        }
-
-        .result-item.medium {
-            border-left-color: #ffd43b;
-        }
-
-        .result-item.low {
-            border-left-color: #ff6b6b;
-        }
-
-        .result-email-pass {
-            color: #333;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .result-meta {
-            display: flex;
-            gap: 20px;
-            font-size: 12px;
-            color: #999;
-            margin-top: 8px;
-            flex-wrap: wrap;
-        }
-
-        .result-meta-item {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .result-meta-item i {
+        .result-item strong {
             color: #667eea;
         }
 
-        .empty-message {
+        .result-count {
+            font-size: 24px;
+            font-weight: 700;
+            color: #667eea;
             text-align: center;
-            padding: 60px 30px;
-            color: #999;
+            margin: 15px 0;
         }
 
-        .empty-message i {
-            font-size: 48px;
-            margin-bottom: 15px;
-            opacity: 0.5;
-        }
-
-        .empty-message p {
-            font-size: 15px;
-        }
-
-        /* Download Buttons */
-        .download-buttons {
-            margin-top: 30px;
+        .download-links {
             display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .container {
-                margin: 0;
-                border-radius: 0;
-            }
+        .download-link {
+            display: inline-block;
+            padding: 10px 15px;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
 
-            .header {
+        .download-link:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .feature {
+            text-align: center;
+            padding: 15px;
+            background: #f8f9ff;
+            border-radius: 10px;
+        }
+
+        .feature-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .feature-text {
+            color: #666;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 600px) {
+            .container {
                 padding: 30px 20px;
             }
 
             .header h1 {
-                font-size: 26px;
+                font-size: 24px;
             }
 
-            .header-icon {
-                font-size: 30px;
-            }
-
-            .content {
-                padding: 25px 20px;
-            }
-
-            .file-list {
+            .features {
                 grid-template-columns: 1fr;
             }
 
             .button-group {
                 flex-direction: column;
             }
-
-            .btn-process, .btn-clear {
-                flex: none;
-                width: 100%;
-            }
-
-            .results-tabs {
-                flex-direction: column;
-            }
-
-            .tab-btn {
-                border-bottom: none;
-                border-left: 3px solid transparent;
-                padding-left: 20px;
-            }
-
-            .tab-btn.active {
-                border-left-color: #667eea;
-                border-bottom: none;
-            }
-
-            .stats {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-                gap: 15px;
-            }
-
-            .tab-content {
-                max-height: 400px;
-            }
-
-            .result-meta {
-                gap: 10px;
-            }
-        }
-
-        .copy-btn {
-            background: #e9ecef;
-            color: #333;
-            padding: 6px 10px;
-            font-size: 11px;
-            border-radius: 6px;
-            margin-left: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .copy-btn:hover {
-            background: #dee2e6;
-        }
-
-        .copy-btn.copied {
-            background: #51cf66;
-            color: white;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <div class="header-content">
-                <h1><span class="header-icon">🔍</span> Email Filter Tool</h1>
-                <p>Lọc email:password Việt Nam từ nhiều file TXT</p>
-            </div>
+            <div class="icon-container">📧</div>
+            <h1>VN Mail Filter Tool</h1>
+            <p>Lọc email Việt Nam từ file danh sách.</p>
+            <p style="color: #999; font-size: 13px;">Hỗ trợ: Gmail, Yahoo, Outlook, Yahoo.com.vn, Hotmail</p>
         </div>
 
-        <div class="content">
-            <!-- Upload Section -->
-            <div class="section">
-                <div class="section-title">
-                    <i class="fas fa-cloud-upload-alt"></i> Tải file TXT
-                </div>
-                <div class="upload-area">
-                    <div class="file-input-wrapper">
-                        <input type="file" id="fileInput" multiple accept=".txt" />
-                        <label for="fileInput" class="file-input-label" id="fileLabel">
-                            <div class="upload-icon">
-                                <i class="fas fa-inbox"></i>
-                            </div>
-                            <div class="file-input-label-text">
-                                Kéo thả file hoặc click để chọn
-                            </div>
-                            <div class="file-input-label-subtext">
-                                Hỗ trợ nhiều file .txt cùng lúc
-                            </div>
-                        </label>
-                    </div>
-                    <div class="file-list" id="fileList"></div>
+        <form id="filterForm">
+            <div class="form-group">
+                <label>📁 Chọn File TXT</label>
+                <div class="file-input-wrapper">
+                    <input type="file" id="fileInput" accept=".txt" />
+                    <label for="fileInput" class="file-input-label">
+                        <span>➕</span>
+                        <span>Nhấp để chọn file hoặc kéo thả</span>
+                    </label>
+                    <div class="file-name" id="fileName"></div>
                 </div>
             </div>
 
-            <!-- Buttons -->
+            <div class="form-group">
+                <label>🎯 Ngưỡng Điểm Lọc</label>
+                <div class="score-input-group">
+                    <input type="number" id="scoreInput" min="1" max="10" value="4" />
+                </div>
+                <div class="hint-text">
+                    💡 4 = khả năng cao là mail Việt Nam | 2 = lọc rộng hơn | 1 = lọc tất cả
+                </div>
+            </div>
+
             <div class="button-group">
-                <button class="btn-process" id="processBtn" disabled>
-                    <i class="fas fa-play"></i> Bắt đầu lọc
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    🚀 Bắt Đầu Lọc
                 </button>
-                <button class="btn-clear" id="clearBtn">
-                    <i class="fas fa-trash-alt"></i> Xóa tất cả
+                <button type="reset" class="btn btn-secondary">
+                    ↻ Đặt Lại
                 </button>
             </div>
+        </form>
 
-            <!-- Progress -->
-            <div class="progress-section" id="progressSection">
-                <div class="progress-info">
-                    <div class="progress-label">
-                        <i class="fas fa-spinner fa-spin"></i> Đang xử lý...
-                    </div>
-                    <div class="progress-percent" id="progressPercent">0%</div>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-bar-fill" id="progressBar"></div>
-                </div>
+        <div class="status-container" id="statusContainer">
+            <div class="spinner"></div>
+            <span id="statusText">Đang xử lý...</span>
+        </div>
+
+        <div class="results" id="results">
+            <div class="result-count" id="resultCount">0</div>
+            <div id="resultSummary"></div>
+            <div class="download-links" id="downloadLinks"></div>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🔍</div>
+                <div class="feature-text">Nhận diện Mail Việt</div>
             </div>
-
-            <!-- Results -->
-            <div class="results-section" id="resultsSection">
-                <div class="results-title">
-                    <i class="fas fa-chart-bar"></i> Kết quả lọc
-                </div>
-                
-                <div class="stats" id="stats"></div>
-
-                <div class="results-tabs">
-                    <button class="tab-btn active" onclick="switchTab('high')">
-                        <i class="fas fa-check-circle"></i> Khả năng cao (≥4 điểm)
-                    </button>
-                    <button class="tab-btn" onclick="switchTab('medium')">
-                        <i class="fas fa-circle-notch"></i> Có thể là (2-3 điểm)
-                    </button>
-                    <button class="tab-btn" onclick="switchTab('low')">
-                        <i class="fas fa-circle"></i> Không đủ (0-1 điểm)
-                    </button>
-                </div>
-
-                <div id="high" class="tab-content active"></div>
-                <div id="medium" class="tab-content"></div>
-                <div id="low" class="tab-content"></div>
-
-                <div class="download-buttons">
-                    <button class="btn-download" id="downloadFiltered" onclick="downloadFiltered()">
-                        <i class="fas fa-download"></i> Tải email:password
-                    </button>
-                    <button class="btn-download" id="downloadDetailed" onclick="downloadDetailed()">
-                        <i class="fas fa-download"></i> Tải chi tiết
-                    </button>
-                </div>
+            <div class="feature">
+                <div class="feature-icon">🛡️</div>
+                <div class="feature-text">An Toàn Dữ Liệu</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <div class="feature-text">Xử Lý Nhanh</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📊</div>
+                <div class="feature-text">Thống Kê Chi Tiết</div>
             </div>
         </div>
     </div>
 
     <script>
-        // Data
-        const selectedFiles = new Map();
-        let processedResults = {
-            high: [],
-            medium: [],
-            low: [],
-            all: []
+        const ALLOWED_DOMAINS = {
+            "gmail.com": true,
+            "yahoo.com": true,
+            "outlook.com": true,
+            "yahoo.com.vn": true,
+            "hotmail.com": true,
         };
 
-        // Vietnamese data
-        const vietnameseSurnames = [
+        const VIET_SURNAMES = [
             "nguyen", "tran", "le", "pham", "hoang", "huynh", "vo", "vu",
             "bui", "do", "dang", "dinh", "ly", "trinh", "phan", "truong",
-            "ngo", "duong", "mai", "cao", "ta", "to", "ngo", "dao", "vu"
+            "ngo", "duong", "mai", "cao", "ta", "to", "luu", "quach",
+            "chau", "dau", "ho", "ha", "dao", "bach"
         ];
 
-        const vietnameseNames = [
-            "anh", "dung", "hieu", "hung", "linh", "minh", "thuy", "trang",
-            "tuan", "quang", "phuong", "hoa", "long", "phuc", "duc", "dat",
-            "sang", "khanh", "khoa", "nhung", "thao", "vy", "yen", "nhi",
-            "hanh", "hai", "son", "trung", "thanh", "tin", "tung", "thien"
+        const VIET_NAMES = [
+            "anh", "bao", "binh", "chau", "chi", "chien", "cong", "cuong",
+            "dat", "duc", "dung", "duy", "giang", "hanh", "hai", "hieu",
+            "hoa", "hoai", "hung", "huy", "khanh", "khoa", "kien", "lan",
+            "linh", "loan", "long", "mai", "manh", "minh", "nam", "nga",
+            "ngan", "ngoc", "nhan", "nhi", "nhung", "phong", "phuoc",
+            "phuc", "phuong", "quang", "quoc", "quy", "sang", "son",
+            "tai", "tam", "tan", "thanh", "thao", "thien", "thinh",
+            "thu", "thuy", "tien", "toan", "trang", "tri", "truc", "trung",
+            "tuan", "tu", "tung", "uyen", "van", "viet", "vinh", "vy", "yen"
         ];
 
-        const vietnamesePlaces = [
-            "hanoi", "hn", "saigon", "sg", "danang", "dn", "haiphong",
-            "hp", "dalat", "longan", "bmt", "ct", "vt", "qn", "qb", "tg",
-            "hcm", "hcity", "dongnai", "camau", "daklak", "haugiang",
-            "binhduong", "bacthu", "vn", "vietnam"
+        const VIET_PLACES = [
+            "vn", "hanoi", "hn", "saigon", "sg", "hcm", "danang", "dn",
+            "haiphong", "hp", "dalat", "bmt", "camau", "dongnai", "haugiang",
+            "longan", "baclieu", "soctrang", "cantho", "ct", "vungtau", "vt",
+            "quangninh", "qn", "quangbinh", "qb", "binhduong", "bd", "daklak",
+            "daknong", "gialai", "kontum", "hue", "nghean", "thanhhoa"
         ];
 
-        const vietnameseSlang = [
-            "kute", "nhox", "nhok", "pe", "heo", "yeuem", "anhyeuem",
-            "maimai", "codon", "tinhyeu", "hotboy", "deptrai", "congchua",
-            "langtu", "pro", "vip", "cute", "boy", "girl", "baby", "love"
+        const VIET_TEENCODE = [
+            "kute", "kut3", "nhox", "nhok", "nhoc", "pe", "heo", "iu",
+            "yeu", "yeuem", "anhyeuem", "maimai", "codon", "tinhyeu",
+            "hotboy", "deptrai", "vip", "pro", "langtu", "congchua",
+            "dethuong", "baby", "gaixinh", "boy", "xinh", "sock", "soc"
         ];
 
-        const vietnameseDomains = [
-            "@gmail.com.vn", "@yahoo.com.vn", "@zing.vn", "@zingme.com",
-            "@fpt.com.vn", "@viettel.com.vn", "@mobifone.vn", "@vnpt.com.vn",
-            "@vietnamworks.com", "@enetviet.vn", "@ymail.com", "@hotmail.com.vn"
-        ];
+        const EMAIL_RE = /\b[a-zA-Z0-9._%+\-]+@(gmail\.com|yahoo\.com|outlook\.com|yahoo\.com\.vn|hotmail\.com)\b/gi;
+        const YEAR_RE = /(?:19[7-9][0-9]|20[0-1][0-9])/;
+        const DAY_MONTH_RE = /(?:0[1-9]|[12][0-9]|3[01])(?:0[1-9]|1[0-2])/;
+        const GEN_RE = /(?:8x|9x|10x)/;
 
-        // File input handling
-        document.getElementById('fileInput').addEventListener('change', handleFileSelect);
-        document.getElementById('fileLabel').addEventListener('dragover', handleDragOver);
-        document.getElementById('fileLabel').addEventListener('dragleave', handleDragLeave);
-        document.getElementById('fileLabel').addEventListener('drop', handleDrop);
+        let selectedFile = null;
 
-        function handleFileSelect(e) {
-            const files = e.target.files;
-            addFiles(files);
-        }
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            selectedFile = e.target.files[0];
+            if (selectedFile) {
+                document.getElementById('fileName').textContent = `✓ ${selectedFile.name}`;
+                document.getElementById('fileName').classList.add('show');
+                document.querySelector('.file-input-label').classList.add('has-file');
+            }
+        });
 
-        function handleDragOver(e) {
+        // Drag and drop
+        const fileLabel = document.querySelector('.file-input-label');
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileLabel.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
             e.preventDefault();
             e.stopPropagation();
-            document.getElementById('fileLabel').classList.add('dragover');
         }
 
-        function handleDragLeave(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            document.getElementById('fileLabel').classList.remove('dragover');
+        ['dragenter', 'dragover'].forEach(eventName => {
+            fileLabel.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            fileLabel.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight(e) {
+            fileLabel.style.background = '#f0f2ff';
         }
+
+        function unhighlight(e) {
+            fileLabel.style.background = '#f8f9ff';
+        }
+
+        fileLabel.addEventListener('drop', handleDrop, false);
 
         function handleDrop(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            document.getElementById('fileLabel').classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            addFiles(files);
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            document.getElementById('fileInput').files = files;
+            const event = new Event('change', { bubbles: true });
+            document.getElementById('fileInput').dispatchEvent(event);
         }
 
-        function addFiles(files) {
-            for (let file of files) {
-                if (file.type === 'text/plain' || file.name.endsWith('.txt')) {
-                    selectedFiles.set(file.name, file);
-                }
-            }
-            updateFileList();
+        function containsAny(text, words) {
+            return words.filter(word => word && text.includes(word));
         }
 
-        function updateFileList() {
-            const fileList = document.getElementById('fileList');
-            fileList.innerHTML = '';
-
-            selectedFiles.forEach((file, name) => {
-                const item = document.createElement('div');
-                item.className = 'file-item';
-                const size = (file.size / 1024).toFixed(2);
-                item.innerHTML = `
-                    <div class="file-item-info">
-                        <div class="file-item-name">📄 ${name}</div>
-                        <div class="file-item-size">${size} KB</div>
-                    </div>
-                    <button class="file-item-remove" onclick="removeFile('${name}')">Xóa</button>
-                `;
-                fileList.appendChild(item);
-            });
-
-            document.getElementById('processBtn').disabled = selectedFiles.size === 0;
-        }
-
-        function removeFile(name) {
-            selectedFiles.delete(name);
-            updateFileList();
-        }
-
-        // Process files
-        document.getElementById('processBtn').addEventListener('click', processFiles);
-        document.getElementById('clearBtn').addEventListener('click', clearAll);
-
-        async function processFiles() {
-            if (selectedFiles.size === 0) {
-                alert('Vui lòng chọn file');
-                return;
-            }
-
-            document.getElementById('progressSection').classList.add('active');
-            processedResults = { high: [], medium: [], low: [], all: [] };
-
-            let processedCount = 0;
-            const totalFiles = selectedFiles.size;
-
-            for (const [name, file] of selectedFiles) {
-                await processFile(file, name);
-                processedCount++;
-                updateProgress((processedCount / totalFiles) * 100);
-            }
-
-            displayResults();
-            document.getElementById('progressSection').classList.remove('active');
-            document.getElementById('resultsSection').classList.add('active');
-        }
-
-        function processFile(file, fileName) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const content = e.target.result;
-                    const lines = content.split('\n');
-
-                    lines.forEach(line => {
-                        line = line.trim();
-                        if (!line) return;
-
-                        if (line.toLowerCase() === 'email:pass' || line.toLowerCase() === 'email:password') {
-                            return;
-                        }
-
-                        const parts = line.split(':');
-                        if (parts.length < 2) return;
-
-                        const email = parts[0].trim().toLowerCase();
-                        const password = parts.slice(1).join(':').trim();
-
-                        if (!email || !password || password.length < 2) return;
-
-                        if (!isValidEmail(email)) return;
-
-                        const score = calculateScore(email, fileName);
-                        const result = {
-                            email,
-                            password,
-                            score,
-                            file: fileName,
-                            reasons: getReasons(email)
-                        };
-
-                        if (score >= 4) {
-                            processedResults.high.push(result);
-                        } else if (score >= 2) {
-                            processedResults.medium.push(result);
-                        } else {
-                            processedResults.low.push(result);
-                        }
-                        processedResults.all.push(result);
-                    });
-
-                    resolve();
-                };
-                reader.readAsText(file, 'UTF-8');
-            });
-        }
-
-        function isValidEmail(email) {
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            return emailRegex.test(email);
-        }
-
-        function calculateScore(email, fileName) {
+        function scoreVietnameseEmail(email) {
+            const local = email.split('@')[0].toLowerCase();
             let score = 0;
+            let reasons = [];
 
-            if (vietnameseDomains.some(d => email.endsWith(d))) {
-                return 99;
-            }
-
-            const localPart = email.split('@')[0].toLowerCase();
-
-            if (vietnameseSurnames.some(s => localPart.includes(s))) {
+            const foundSurnames = containsAny(local, VIET_SURNAMES);
+            if (foundSurnames.length > 0) {
                 score += 3;
+                reasons.push(`họ Việt: ${foundSurnames.slice(0, 3).join(', ')}`);
             }
 
-            if (vietnameseNames.some(n => localPart.includes(n))) {
+            const foundNames = containsAny(local, VIET_NAMES);
+            if (foundNames.length > 0) {
                 score += 2;
+                reasons.push(`tên Việt: ${foundNames.slice(0, 3).join(', ')}`);
             }
 
-            if (vietnamesePlaces.some(p => localPart.includes(p))) {
+            const foundPlaces = containsAny(local, VIET_PLACES);
+            if (foundPlaces.length > 0) {
                 score += 1;
+                reasons.push(`địa danh/viết tắt: ${foundPlaces.slice(0, 3).join(', ')}`);
             }
 
-            if (vietnameseSlang.some(s => localPart.includes(s))) {
+            const foundTeencode = containsAny(local, VIET_TEENCODE);
+            if (foundTeencode.length > 0) {
                 score += 1;
+                reasons.push(`teencode: ${foundTeencode.slice(0, 3).join(', ')}`);
             }
 
-            if (/\b(19[7-9][0-9]|20[0-2][0-9])\b/.test(localPart)) {
+            if (YEAR_RE.test(local) || GEN_RE.test(local)) {
                 score += 1;
+                reasons.push('có năm sinh/thế hệ');
             }
 
-            if (/\b(0[1-9]|[12][0-9]|3[01])(0[1-9]|1[0-2])\b/.test(localPart) || 
-                /\b(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\b/.test(localPart)) {
+            if (DAY_MONTH_RE.test(local)) {
                 score += 1;
+                reasons.push('có dạng ngày-tháng');
             }
 
-            return score;
+            let level = "Không đủ căn cứ";
+            if (score >= 4) {
+                level = "Khả năng cao là mail Việt Nam";
+            } else if (score >= 2) {
+                level = "Có thể là mail Việt Nam";
+            }
+
+            return {
+                score,
+                level,
+                reason: reasons.length > 0 ? reasons.join('; ') : 'không có dấu hiệu rõ'
+            };
         }
 
-        function getReasons(email) {
-            const reasons = [];
-            const localPart = email.split('@')[0].toLowerCase();
+        document.getElementById('filterForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
 
-            if (vietnameseSurnames.some(s => localPart.includes(s))) {
-                reasons.push("có họ Việt");
-            }
-            if (vietnameseNames.some(n => localPart.includes(n))) {
-                reasons.push("có tên Việt");
-            }
-            if (vietnamesePlaces.some(p => localPart.includes(p))) {
-                reasons.push("có địa danh");
-            }
-            if (vietnameseSlang.some(s => localPart.includes(s))) {
-                reasons.push("có teencode");
-            }
-            if (/\b(19[7-9][0-9]|20[0-2][0-9])\b/.test(localPart)) {
-                reasons.push("có năm sinh");
-            }
-
-            return reasons;
-        }
-
-        function updateProgress(percent) {
-            document.getElementById('progressBar').style.width = percent + '%';
-            document.getElementById('progressPercent').textContent = Math.round(percent) + '%';
-        }
-
-        function displayResults() {
-            const stats = document.getElementById('stats');
-            stats.innerHTML = `
-                <div class="stat-card stat-card-1">
-                    <h3>${processedResults.high.length}</h3>
-                    <p>Khả năng cao<br>(≥4 điểm)</p>
-                </div>
-                <div class="stat-card stat-card-2">
-                    <h3>${processedResults.medium.length}</h3>
-                    <p>Có thể là<br>(2-3 điểm)</p>
-                </div>
-                <div class="stat-card stat-card-3">
-                    <h3>${processedResults.low.length}</h3>
-                    <p>Không đủ<br>(0-1 điểm)</p>
-                </div>
-                <div class="stat-card stat-card-4">
-                    <h3>${processedResults.all.length}</h3>
-                    <p>Tổng cộng</p>
-                </div>
-            `;
-
-            displayTab('high', processedResults.high);
-            displayTab('medium', processedResults.medium);
-            displayTab('low', processedResults.low);
-        }
-
-        function displayTab(tabName, results) {
-            const container = document.getElementById(tabName);
-            container.innerHTML = '';
-
-            if (results.length === 0) {
-                container.innerHTML = `
-                    <div class="empty-message">
-                        <i class="fas fa-inbox"></i>
-                        <p>Không có kết quả</p>
-                    </div>
-                `;
+            if (!selectedFile) {
+                alert('Vui lòng chọn file TXT');
                 return;
             }
 
-            results.forEach((result, index) => {
-                const item = document.createElement('div');
-                let className = 'result-item';
-                if (tabName === 'high') className += ' high';
-                else if (tabName === 'medium') className += ' medium';
-                else className += ' low';
+            const minScore = parseInt(document.getElementById('scoreInput').value);
+            const statusContainer = document.getElementById('statusContainer');
+            const results = document.getElementById('results');
 
-                item.className = className;
-                item.innerHTML = `
-                    <div class="result-email-pass">
-                        <strong>${index + 1}.</strong> ${result.email}:${result.password}
-                    </div>
-                    <div class="result-meta">
-                        <div class="result-meta-item">
-                            <i class="fas fa-file"></i> ${result.file}
-                        </div>
-                        <div class="result-meta-item">
-                            <i class="fas fa-star"></i> Điểm: ${result.score}
-                        </div>
-                        <div class="result-meta-item">
-                            <i class="fas fa-tag"></i> ${result.reasons.join(', ') || 'không có dấu hiệu rõ'}
-                        </div>
-                    </div>
+            statusContainer.classList.add('show');
+            results.classList.remove('show');
+
+            try {
+                const content = await selectedFile.text();
+                const lines = content.split('\n');
+
+                const seen = new Set();
+                const rows = [];
+                const domainCounter = {};
+                const levelCounter = {};
+
+                for (const line of lines) {
+                    if (!line.trim()) continue;
+
+                    const emailMatch = line.match(EMAIL_RE);
+                    if (!emailMatch) continue;
+
+                    const email = emailMatch[0].toLowerCase();
+                    const domain = email.split('@')[1];
+
+                    if (!ALLOWED_DOMAINS[domain]) continue;
+                    if (seen.has(email)) continue;
+
+                    seen.add(email);
+
+                    const passwordMatch = line.match(new RegExp(email + ':(.*)$', 'i'));
+                    const password = passwordMatch ? passwordMatch[1].trim() : 'N/A';
+
+                    const { score, level, reason } = scoreVietnameseEmail(email);
+
+                    if (score >= minScore) {
+                        rows.push({ email, password, domain, score, level, reason });
+                        domainCounter[domain] = (domainCounter[domain] || 0) + 1;
+                        levelCounter[level] = (levelCounter[level] || 0) + 1;
+                    }
+                }
+
+                rows.sort((a, b) => b.score - a.score || a.domain.localeCompare(b.domain));
+
+                statusContainer.classList.remove('show');
+
+                // Display results
+                document.getElementById('resultCount').textContent = rows.length;
+
+                let summaryHtml = '<div style="text-align: left; margin: 15px 0;">';
+                summaryHtml += '<strong>📊 Thống Kê:</strong><br>';
+                summaryHtml += `Tổng email được lọc: <strong>${rows.length}</strong><br><br>`;
+
+                summaryHtml += '<strong>Theo Domain:</strong><br>';
+                for (const [domain, count] of Object.entries(domainCounter)) {
+                    summaryHtml += `• ${domain}: <strong>${count}</strong><br>`;
+                }
+
+                summaryHtml += '<br><strong>Theo Mức Nhận Diện:</strong><br>';
+                for (const [level, count] of Object.entries(levelCounter)) {
+                    summaryHtml += `• ${level}: <strong>${count}</strong><br>`;
+                }
+                summaryHtml += '</div>';
+
+                document.getElementById('resultSummary').innerHTML = summaryHtml;
+
+                // Generate download links
+                const downloadLinksHtml = `
+                    <button class="download-link" onclick="downloadCSV(${JSON.stringify(rows).replace(/"/g, '&quot;')})">
+                        📥 Tải CSV (Đầy Đủ)
+                    </button>
+                    <button class="download-link" onclick="downloadTXT(${JSON.stringify(rows).replace(/"/g, '&quot;')})">
+                        📥 Tải TXT (Email:Password)
+                    </button>
                 `;
-                container.appendChild(item);
-            });
-        }
+                document.getElementById('downloadLinks').innerHTML = downloadLinksHtml;
 
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.closest('.tab-btn').classList.add('active');
+                results.classList.add('show');
 
-            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
-        }
-
-        function downloadFiltered() {
-            let content = '# Email:Password - Khả năng cao (≥4 điểm)\n\n';
-            processedResults.high.forEach(r => {
-                content += `${r.email}:${r.password}\n`;
-            });
-
-            content += '\n# Email:Password - Có thể là (2-3 điểm)\n\n';
-            processedResults.medium.forEach(r => {
-                content += `${r.email}:${r.password}\n`;
-            });
-
-            downloadFile(content, 'email_filtered.txt');
-        }
-
-        function downloadDetailed() {
-            let content = '# Email Filter Results - Chi tiết\n\n';
-            content += `Ngày lọc: ${new Date().toLocaleString('vi-VN')}\n\n`;
-
-            content += `## Khả năng cao (≥4 điểm): ${processedResults.high.length}\n\n`;
-            processedResults.high.forEach((r, i) => {
-                content += `${i + 1}. ${r.email}:${r.password}\n`;
-                content += `   📁 File: ${r.file}\n`;
-                content += `   ⭐ Điểm: ${r.score}\n`;
-                content += `   📝 Lý do: ${r.reasons.join(', ') || 'không có dấu hiệu rõ'}\n\n`;
-            });
-
-            content += `## Có thể là (2-3 điểm): ${processedResults.medium.length}\n\n`;
-            processedResults.medium.forEach((r, i) => {
-                content += `${i + 1}. ${r.email}:${r.password}\n`;
-                content += `   📁 File: ${r.file}\n`;
-                content += `   ⭐ Điểm: ${r.score}\n`;
-                content += `   📝 Lý do: ${r.reasons.join(', ') || 'không có dấu hiệu rõ'}\n\n`;
-            });
-
-            content += `## Không đủ (0-1 điểm): ${processedResults.low.length}\n\n`;
-            processedResults.low.slice(0, 100).forEach((r, i) => {
-                content += `${i + 1}. ${r.email}:${r.password}\n`;
-                content += `   📁 File: ${r.file}\n\n`;
-            });
-            if (processedResults.low.length > 100) {
-                content += `... và ${processedResults.low.length - 100} kết quả khác\n`;
+            } catch (error) {
+                alert('Lỗi: ' + error.message);
+                statusContainer.classList.remove('show');
             }
+        });
 
-            downloadFile(content, 'email_detailed.txt');
+        function downloadCSV(rows) {
+            let csv = 'Email,Password,Domain,Score,Level,Reason\n';
+            rows.forEach(row => {
+                csv += `"${row.email}","${row.password}","${row.domain}",${row.score},"${row.level}","${row.reason}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `vn_mail_filtered_${new Date().getTime()}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
 
-        function downloadFile(content, filename) {
-            const element = document.createElement('a');
-            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
-            element.setAttribute('download', filename);
-            element.style.display = 'none';
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
-        }
+        function downloadTXT(rows) {
+            let txt = 'VN Mail Filter - Email:Password List\n';
+            txt += '='.repeat(50) + '\n\n';
+            rows.forEach(row => {
+                txt += `${row.email}:${row.password}\n`;
+            });
+            txt += `\nTổng cộng: ${rows.length} email\n`;
 
-        function clearAll() {
-            selectedFiles.clear();
-            processedResults = { high: [], medium: [], low: [], all: [] };
-            document.getElementById('fileList').innerHTML = '';
-            document.getElementById('resultsSection').classList.remove('active');
-            document.getElementById('progressSection').classList.remove('active');
-            document.getElementById('processBtn').disabled = true;
-            document.getElementById('fileInput').value = '';
-            updateFileList();
+            const blob = new Blob([txt], { type: 'text/plain;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `vn_mail_filtered_${new Date().getTime()}.txt`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
     </script>
 </body>
